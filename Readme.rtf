@@ -1,0 +1,119 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf400
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fnil\fcharset0 Menlo-Regular;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red255\green255\blue255;\red28\green0\blue207;
+\red14\green14\blue255;\red196\green26\blue22;}
+{\*\expandedcolortbl;;\csgenericrgb\c0\c0\c0;\csgenericrgb\c100000\c100000\c100000;\csgenericrgb\c11000\c0\c81000;
+\csgenericrgb\c5500\c5500\c100000;\csgenericrgb\c77000\c10200\c8600;}
+\margl1440\margr1440\vieww10800\viewh22540\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 This document contains a description of all directories in this folder and the use of their python scripts. Contact tlalka@live.unc.edu, 9195998860 for more details.\
+\
+Draw Arms:\
+These scripts covert line data from step 2 of the zooniverse project into fits images of the galaxy\'92s arms. You can use GIMP or ds9 to view the images.\
+Run the python script \'93extract_markings.py\'94 on your zooniverse classification file \'93spiral-graph-classifications.cvs\'94 to create the \'93spiral-graph-clean.txt\'94 file. It\'92s format is as following:\
+\
+"task" : r_19CharacterFileName.jpeg\
+"tool":\
+"x": xcoordinate,\'94y\'94: ycoordinate\
+"x": xcoordinate,\'94y\'94: ycoordinate\
+\'85\
+"x": xcoordinate,\'94y\'94: ycoordinate\
+"task" : r_aDifferent19CharacterFileName.jpeg\
+"tool":\
+"x": xcoordinate,\'94y\'94: ycoordinate \
+\'85\
+End\
+\
+extract_markings.py may need to be changed if you change the project or if Zooniverse changes how it exports classifications.\
+\
+\'93map.py\'94 takes the \'93spiral-graph-clean.txt\'94, creates the FITS pictures, and puts them into a folder called \'93line\'94 at the target directory. When you run map.py, it will ask for the name/path to a directory that holds all the deprojected images that match the images in your classification file. An example path may be \'93/Users/astrolab/Documents/Zooniverse/Auto/test/rotated\'94. \
+\
+The \'93test\'94 folder contains an example of what you would expect to see from successfully running the code. The target directory given to the program is simply \'93test\'94 or \'93/Users/astrolab/Documents/Zooniverse/DrawArms/test/test\'94.\
+\
+\
+\
+Auto:\
+This script cleans the data from step 1 of the zooniverse project, averages the classifications, deprojects the galaxy images, uploads the images to the zooniverse project, and links them to the \'93draw arms\'94 workflow. What that means is, after a set of 1000 images is done on step 1 (the drawing an ellipse part) of the zooniverse project, you can run this one script and it will automatically put those images onto step 2. \
+When you run this script, it will ask for a the path to the original pictures folder. It will then ask for the file name for the classifications from zooniverse, and produce a \'93spiral-graph-clean.csv\'94 file. It will then take that file and produce a \'93spiral-graph-averaged.csv\'94 file. The angles are the normalized weighted average. Next, it will take that averaged file, and use it to deproject all the original images. They will be placed into a directory named \'93rotated\'94. If less than 67% of people said an image was a spiral galaxy, it will not be deprojected. It will then ask for which zooniverse project you would like to upload and link the images to. You can skip this step by putting in nothing. It uses the login 
+\f1\fs26 \cf2 \cb3 (username=\cf4 'Astrolab11'\cf2 , password=\cf4 'Astroguest11!'\cf2 ) 
+\f0\fs24 \cf0 \cb1 to do this. It will also attempt to upload the metadata file \'93Spirals_jpg.csv\'94 to zooniverse.\
+This script also has a \'93test\'94 folder with sample data files and images that should exhibit it\'92s proper behavior.\
+\
+GenerateColorGalaxies:\
+This script generates color jpg images of the SDSS survey. You probably don\'92t want to use this.\
+\
+GenerateFITSGalaxies:\
+The \'93generate_decals.py\'94 file takes a \'93SelectedSpirals.csv\'94 file and downloads the FITS images for these galaxies. It gets imaged from the \'93DECAL\'94 survey when possible and \'93SDSS\'94 when not. It acquires the images from the 
+\f1\fs26 \cf5 \cb3 http://legacysurvey.org 
+\f0\fs24 \cf0 \cb1 and the metadata from 
+\f1\fs26 \cf4 \cb3 http://skyserver.sdss.org
+\f0\fs24 \cf0 \cb1 . In addition to downloading the imaged and creating a metadata file called \'93Spirals_jpg.csv\'94, it processes the FITS images into jpg previews ready to upload to zooniverse. To process these images it checks that the pixels at (256,256),(341,341),(171,171),(171,341),(341,171) and (171,171) are not blank (this would mean the DECAL survey does not gave this galaxy and we need to use the SDSS survery). It then calculates the 5% percentile of darkest pixels, and the brightest pixel out of the nine pixels in the center of the image. It scales the image logarithmically ranging from this maximum and minimum and exports the jpeg in ds9. \
+\
+The folder 6000 contains all 6000 fits and jpg images. TO upload them to zooniverse, just drag a set of 1000 into the upload window, it will automatically upload only the jpegs for you.\
+\
+JPGvsFITS_DECAL&SDSS compares the FITS images to the original JPEGs\
+\
+JPG_DECALvsSDSS compares the JPEG DECAL images to the JPEG SDSS images\
+\
+The \'93genrand\'94 script generates a folder with 25 random galaxies out of the 6000. \
+\
+The \'93random25\'94 folder contains 25 random galaxies out of the 6000\
+\
+Unprocessed contains FITS images before we used our custom image adjustment and processing. The are just logarithmically scaled using the default values. \
+\
+ExtractEllipseData:\
+This file contains scripts for extracting the classification for the ellipse data and cleaning it. These functions are already in the \'93auto\'94 code, so you probably don\'92t need this folder.\
+\
+DeprojectEllipseData:\
+This file contains scripts for deprojecting the ellipse data. These functions are already in the \'93auto\'94 code, so you probably don\'92t need this folder.\
+\
+TutorialPictures:\
+This file contains the videos, pictures and gifs used in the tutorials of the zooniverse project. \
+\
+25test:\
+This file contains the process on the sample set of 25 galaxies we tested. \'93classes.csv\'94 contains the data from Zooniverse. \'93randoms\'94 both the old and the new deprojected pictures. \'93Rotated copy\'94 inside \'93randoms\'94 contains the images deprojected using the mean instead of the weighted average.\
+\
+\
+\
+Troubleshoot:\
+\
+generate_decals.py only gave me 6000 images and not 6222.\
+When run by default, it gets sets of 1000. Run 
+\f1\fs26 \cf6 \cb3 python2.7 generate_decals.py -p 'SelectedSpirals.csv\'92 -s 222 -b 27
+\f0\fs24 \cf0 \cb1  to get the last set (it will be called set 28)\
+\
+\'93generate_decals.py\'94 downloads FITS images, but doesn\'92t create jpg previews. Run \'93
+\f1\fs26 \cf6 \cb3 source activate iraf27
+\f0\fs24 \cf0 \cb1 \'94 in your terminal and then try again.\
+\
+\'93generate_decals.py\'94 takes a very long time.\
+Plug in your ethernet cable. It will take a long time to download and process large sets. \
+\
+\'93map.py\'94 fails to draw any arms. \
+Make sure to run extract_markings.py to get the clean input file first. If extract_markings.py doesn\'92t work, zooniverse may have changed the output formate for their classifications. If you downloaded \'93all classifications\'94 from zooniverse, make sure to delete old, outdated classifications, or classifications for the \'93draw ellipse\'94 step. It\'92s best to download classifications only for the \'93draw arms\'94 workflow. \
+\
+\'93map.py\'94 gives arms that aren\'92t centered in the image.\
+Make sure you are giving it the directory to the rotated images, not the original ones. It needs the dimensions of each image to plot the arms properly.\
+\
+\'93AutoRun.py\'94 fails to run.\
+Make sure that the \'93clean\'94 classification file looks right. If zooniverse changes how they export classifications, the program may fail to generate a corrected \'93spiral-graph-clean.csv\'94. If you downloaded \'93all classifications\'94 from zooniverse, make sure to delete old, outdated classifications, or classifications for the \'93draw arms\'94 step. It\'92s best to download classifications only for the \'93draw ellipse\'94 workflow. \
+\
+\'93AutoRun.py\'94 runs but fails to generate any rotated images.\
+Make sure that the \'93spiral percentage\'94 column in the \'93clean\'94 file is over 1. If any are negative, the program is failing to read the data for the \'93is this galaxy smooth or spiral?\'94 Question correctly. It assumes that the smooth option starts with \'93Sm\'94 and the spiral option starts with \'93St\'94. If you changed these options in the zooniverse site, make sure to change the code accordingly. \
+\
+\'93AutoRun.py\'94 runs and generates images, but they don\'92t look right.\
+Check the \'93spiral-graph-averaged.csv\'94 to see if the numbers are what you expected.\
+\
+\'93AutoRun.py\'94 fails to upload any images to the zooniverse site. \
+Zooniverse may have changed their APIs. You can upload the images by hand by just dragging a group of 1000 into a new \'93subject set\'94. Don\'92t forget to upload the cvs file with the meta data.\
+\
+If you are troubleshooting, it helps to attempt to run the code on the test folder/data I provided. You can\'92t then compare what\'92s different about your data that makes the program fail. \
+\
+\
+
+\f1\fs26 \cf6 \cb3 \
+\pard\tx642\pardeftab642\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 \cb1 \
+}
