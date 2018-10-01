@@ -175,9 +175,7 @@ for i, row in enumerate(classifications.iterrows()):
         if (classes > 0)and(list[0] == subject_id):
             same = True
             if(list[7] < 15):
-                list[7] += 1
-                #print ("This one is already in data = " + str(list))
-                #this value is already in here, so we can average it in and break the loop
+                list[7] += 1 #this number keeps track of how many classifications we have so far for the given galaxy
                 list[1] += x
                 list[2] += y
                 list[3] += rx
@@ -185,14 +183,15 @@ for i, row in enumerate(classifications.iterrows()):
                 #list[5] += angle
                 list[8] += spiral
                 
-                print(jpg+" current angle "+str(list[5]/(list[7]-1)) + " adding " + str(angle))
+                #print(jpg+" current angle "+str(list[5]/(list[7]-1)) + " adding " + str(angle))
                 if (((angle - (list[5]/(list[7]-1))) > 90) or ((angle - (list[5]/(list[7]-1))) < -90)):
                     a1 = abs(angle - (list[5]/(list[7]-1)))
                     a2 = abs(angle - 180 - (list[5]/(list[7]-1)))
                     print(a1)
                     print(a2)
+                    #I think a1 will always be greater than because of the prior if statment
                     if(a2<a1):
-                        print("a2<a1 " + str(angle-180))
+                        #print("a2<a1 " + str(angle-180))
                         angle = angle - 180
                     else:
                         print("a2>a1 " + str(angle))
