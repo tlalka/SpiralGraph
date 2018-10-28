@@ -57,7 +57,7 @@ for i, row in enumerate(classifications.iterrows()):
     #print (subject_id)
     #print("%f" % faceon)
     #and not (bulge_1+bulge_2 > .67 and arms_tight > .67) and not (bulge_4 > .67 and arms_loose > .67)
-    if(spiral_W > .67 and (1-irregular) > .67):
+    if(spiral_W > .67 and (1-irregular) > .67 and not (bulge_1+bulge_2 > .67 and arms_tight > .67) and not (bulge_4 > .67 and arms_loose > .67)):
         foth.write("%f, %f, %d, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f\n" % (ra, dec, votes, disk, faceon, spiral, spiral_W, bulge_1, bulge_2, bulge_3, bulge_4, arms_tight, arms_medium, arms_loose, arms_1, arms_2, arms_3, arms_4, arms_5, arms_6, irregular))
         #print(i)
         i = i+1
