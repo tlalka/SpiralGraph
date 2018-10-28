@@ -21,7 +21,7 @@ foth = open("clean.csv", "w")
 # and the frame the user drew the mark on, respectively
 
 # the other/interesting marker is an ellipse+tag: {(x, y), (rx, ry), angle, text}
-foth.write("RA, DA, classifications, disk, faceon, spiral, bulge_1, bulge_2, bulge_3, bulge_4, arms_tight, arms_medium, arms_loose, arms_1, arms_2, arms_3, arms_4, arms_5, arms_6, irregular \n")
+foth.write("RA, DA, classifications, disk, faceon, spiral, spiral_weighted, bulge_1, bulge_2, bulge_3, bulge_4, arms_tight, arms_medium, arms_loose, arms_1, arms_2, arms_3, arms_4, arms_5, arms_6, irregular \n")
 
 
 i = 0
@@ -36,6 +36,7 @@ for i, row in enumerate(classifications.iterrows()):
     disk   = 0.0 + cl['t01_smooth_or_features_a02_features_or_disk_weighted_fraction']
     faceon   = 0.0 + cl['t02_edgeon_a05_no_weighted_fraction']
     spiral   = 0.0 + cl['t04_spiral_a08_spiral_weighted_fraction']
+    spiral_W = disk * faceon * spiral 
     bulge_1   = 0.0 + cl['t05_bulge_prominence_a10_no_bulge_weighted_fraction']
     bulge_2   = 0.0 + cl['t05_bulge_prominence_a11_just_noticeable_weighted_fraction']
     bulge_3   = 0.0 + cl['t05_bulge_prominence_a12_obvious_weighted_fraction']
@@ -54,10 +55,10 @@ for i, row in enumerate(classifications.iterrows()):
 
     # the image which was classified
     #print (subject_id)
-    print("%f" % faceon)
+    #print("%f" % faceon)
     
-    if(spiral > .67 and (1-irregular) > .67 and not (bulge_1+bulge_2 > .67 and arms_tight > .67) and not (bulge_4 > .67 and arms_loose > .67)):
-        foth.write("%f, %f, %d, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f\n" % (ra, dec, votes, disk, faceon, spiral, bulge_1, bulge_2, bulge_3, bulge_4, arms_tight, arms_medium, arms_loose, arms_1, arms_2, arms_3, arms_4, arms_5, arms_6, irregular))
+    if(spiral_W > .67 and (1-irregular) > .67 and not (bulge_1+bulge_2 > .67 and arms_tight > .67) and not (bulge_4 > .67 and arms_loose > .67)):
+        foth.write("%f, %f, %d, %f %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f\n" % (ra, dec, votes, disk, faceon, spiral, spiral_W, bulge_1, bulge_2, bulge_3, bulge_4, arms_tight, arms_medium, arms_loose, arms_1, arms_2, arms_3, arms_4, arms_5, arms_6, irregular))
         #print(i)
         i = i+1
 
